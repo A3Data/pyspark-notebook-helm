@@ -1,15 +1,62 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "pyspark.fullname" . }}
   labels:
     {{- include "pyspark.labels" . | nindent 4 }}
+  annotations:
+{{ toYaml .Values.service.annotations | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
     {{- include "pyspark.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: {{ .Values.service.httpPortName | default "http" }}
+      protocol: TCP
+      port: {{ .Values.httpPort }}
+      targetPort: http
+  {{- if .Values.service.nodePort }}
+      nodePort: {{ .Values.service.nodePort }}
+  {{- end }}
+    - name: {{ .Values.service.blockManagerPortName | default "blockmanager" }}
+      protocol: TCP
+      port: {{ .Values.blockManagerPort }}
+      targetPort: blockmanager
+    - name: {{ .Values.service.driverPortName | default "driver" }}
+      protocol: TCP
+      port: {{ .Values.driverPort }}
+      targetPort: driver
+  {{- if .Values.service.loadBalancerIP }}
+    loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- with .Values.service.loadBalancerSourceRanges }}
+    loadBalancerSourceRanges:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  {{- if .Values.service.externalTrafficPolicy }}
+    externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "pyspark.fullname" . }}-headless
+  labels:
+    {{- include "pyspark.labels" . | nindent 4 }}
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  clusterIP: None # This is needed for statefulset hostnames like pyspark-0 to resolve
+  # Create endpoints also if the related pod isn't ready
+  publishNotReadyAddresses: true 
+  selector:
+    app: "{{ template "pyspark.fullname" . }}"
+  ports:
+  - name: {{ .Values.service.httpPortName | default "http" }}
+    port: {{ .Values.httpPort }}
+  - name: {{ .Values.service.blockManagerPortName | default "blockmanager" }}
+    port: {{ .Values.blockManagerPort }}
+  - name: {{ .Values.service.driverPortName | default "driver" }}
+    port: {{ .Values.driverPort }}

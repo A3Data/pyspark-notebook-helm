@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Return the appropriate apiVersion for statefulset.
+*/}}
+{{- define "pyspark.statefulset.apiVersion" -}}
+{{- if semverCompare "<1.9-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- print "apps/v1beta2" -}}
+{{- else -}}
+{{- print "apps/v1" -}}
+{{- end -}}
+{{- end -}}

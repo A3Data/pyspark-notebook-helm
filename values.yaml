@@ -5,14 +5,29 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: jupyter/pyspark-notebook
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "spark-3.1.2"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: standard
+
+persistence:
+  enabled: true
+  labels:
+    # Add default labels for the volumeClaimTemplate fo the StatefulSet
+    enabled: false
+  annotations: {}
+
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -36,9 +51,29 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# The default is to deploy all pods serially. By setting this to parallel all pods are started at
+# the same time when bootstrapping the cluster
+podManagementPolicy: "Parallel"
+
+httpPort: 8888
+blockManagerPort: 7777
+driverPort: 2222
+
 service:
   type: ClusterIP
-  port: 80
+  nodePort: ""
+  annotations: {}
+  httpPortName: http
+  blockManagerPortName: blockmanager
+  driverPortName: driver
+  loadBalancerIP: ""
+  loadBalancerSourceRanges: []
+  externalTrafficPolicy: ""
+
+updateStrategy: RollingUpdate
+
+# How long to wait for pyspark to stop gracefully
+terminationGracePeriod: 30
 
 ingress:
   enabled: false
@@ -56,17 +91,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  requests:
+    cpu: "1000m"
+    memory: "2Gi"
+  limits:
+    cpu: "1000m"
+    memory: "2Gi"
 
 autoscaling:
   enabled: false
