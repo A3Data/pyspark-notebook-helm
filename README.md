@@ -1,8 +1,8 @@
-# Jupyter Notebook Pyspark Kubernetes Helm Charts
+# Pyspark Notebook Helm Chart
 
 ## Introduction
 This repo provides 
-the Kubernetes [Helm](https://helm.sh/) charts for deploying 
+the Kubernetes [Helm](https://helm.sh/) chart for deploying 
 [Pyspark Notebook](https://hub.docker.com/r/jupyter/pyspark-notebook).
 
 ## Setup
@@ -21,7 +21,7 @@ the Kubernetes [Helm](https://helm.sh/) charts for deploying
 Clone the repository
 
 ```(shell)
-git clone https://github.com/maylatt/pyspark-helm.git
+git clone https://github.com/A3Data/pyspark-helm.git
 ```
 
 deploy Pyspark Notebook by running the following
