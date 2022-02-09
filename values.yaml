@@ -13,6 +13,15 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+storageClass:
+  create: false
+  name: 
+  provisioner: 
+  type: 
+  replicationType:
+  fstype:
+  reclaimPolicy: 
+
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
   volumeMode: Filesystem
