@@ -81,10 +81,11 @@ env:
 
 extraVolumes: 
   - name: secrets
-    mountPath: "/mnt/secrets"
-    readOnly: true
-extraVolumeMounts: 
-  - name: secrets
     secret:
       secretName: gcp-credentials
+
+extraVolumeMounts:
+  - name: secrets
+    mountPath: "/mnt/secrets"
+    readOnly: true 
 ```
