@@ -78,6 +78,8 @@ spec:
             - name: "{{ template "pyspark.fullname" . }}"
               mountPath: /home/notebook
             {{- end }}
+          envFrom:
+          {{- include "pyspark.customEnvironmentFrom" . | default "\n  []" | indent 10 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
