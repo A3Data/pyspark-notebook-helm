@@ -80,7 +80,7 @@ spec:
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - name: {{ template "pyspark.fullname" . }}-notebooks
-              mountPath: /home/notebook
+              mountPath: /home/jovyan/work/
             {{- end }}
             {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
