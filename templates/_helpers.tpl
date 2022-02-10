@@ -75,7 +75,7 @@ Return the appropriate apiVersion for statefulset.
 {{/*
 Return custom environment variables
 */}}
-{{- define "pyspark.customEnvironmentFrom" }}
+{{- define "pyspark.customEnvironment" }}
   # Dynamically created environment variables
   {{- range $i, $config := .Values.env }}
   - name: {{ $config.name }}
