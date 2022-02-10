@@ -54,7 +54,7 @@ spec:
             claimName: {{ template "pyspark.fullname" . }}-notebooks
       {{- end }}
       {{- if .Values.extraVolumes }}
-      {{ toYaml .Values.extraVolumes | indent 8 }}
+      {{- toYaml .Values.extraVolumes | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -88,7 +88,7 @@ spec:
               mountPath: /home/notebook
             {{- end }}
             {{- if .Values.extraVolumeMounts }}
-            {{ toYaml .Values.extraVolumeMounts | indent 12 }}
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
             {{- end }}
           env:
           {{- include "pyspark.customEnvironment" . | indent 10 }}
