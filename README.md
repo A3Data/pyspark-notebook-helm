@@ -62,6 +62,29 @@ jupyter notebook list
 
 ## LoadBalancer
 
-```(shell)
+```sh
 helm install pyspark ./pyspark-helm/ --values ./pyspark-helm/values.yaml --set service.type=LoadBalancer
+```
+
+## GCP Example
+
+Create secret
+```sh
+kubectl create secret generic gcs-credentials --from-file="./config/key.json"
+```
+Alter values.yaml
+
+```yaml
+env: 
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /mnt/secrets/key.json
+
+extraVolumes: 
+  - name: secrets
+    mountPath: "/mnt/secrets"
+    readOnly: true
+extraVolumeMounts: 
+  - name: secrets
+    secret:
+      secretName: gcp-credentials
 ```

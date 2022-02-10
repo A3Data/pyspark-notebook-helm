@@ -17,7 +17,7 @@ spec:
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
-      name: {{ template "pyspark.fullname" . }}
+      name: {{ template "pyspark.fullname" . }}-notebooks
     {{- if .Values.persistence.labels.enabled }}
       labels:
         {{- include "pyspark.labels" . | nindent 8 }}
@@ -47,6 +47,15 @@ spec:
       serviceAccountName: {{ include "pyspark.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      {{- if .Values.persistence.enabled }}
+        - name: notebooks
+          persistentVolumeClaim:
+            claimName: {{ template "pyspark.fullname" . }}-notebooks
+      {{- end }}
+      {{- if .Values.extraVolumes }}
+      {{ toYaml .Values.extraVolumes | indent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -75,8 +84,11 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             {{- if .Values.persistence.enabled }}
-            - name: "{{ template "pyspark.fullname" . }}"
+            - name: notebooks
               mountPath: /home/notebook
+            {{- end }}
+            {{- if .Values.extraVolumeMounts }}
+            {{ toYaml .Values.extraVolumeMounts | indent 12 }}
             {{- end }}
           env:
           {{- include "pyspark.customEnvironment" . | indent 10 }}

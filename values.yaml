@@ -32,20 +32,27 @@ persistence:
 # This will be appended to the current 'env:' key. You can use any of the kubernetes env
 # syntax here
 env: []
-# - name: MY_ENVIRONMENT_VAR
-#   value: the_value_goes_here
+# - name: GOOGLE_APPLICATION_CREDENTIALS
+#   value: path_to_credential
 
 # Allows you to load environment variables from kubernetes secret
 secret: []
-# - envName: GOOGLE_APPLICATION_CREDENTIALS
-#   secretName: ""
-#   secretKey: ""
 # - envName: AWS_ACCESS_KEY_ID
 #   secretName: ""
 #   secretKey: ""
 # - envName: AWS_SECRET_ACCESS_KEY
 #   secretName: ""
 #   secretKey: ""
+
+# Mount additional volumes into pyspark container.
+extraVolumes: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
+extraVolumeMounts: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
 
 serviceAccount:
   # Specifies whether a service account should be created
