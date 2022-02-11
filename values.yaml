@@ -13,21 +13,12 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-storageClass:
-  create: false
-  name: 
-  provisioner: 
-  type: 
-  replicationType:
-  fstype:
-  reclaimPolicy: 
-
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 100Mi
+      storage: 10Gi
   storageClassName: standard
 
 persistence:
@@ -41,20 +32,28 @@ persistence:
 # This will be appended to the current 'env:' key. You can use any of the kubernetes env
 # syntax here
 env: []
-# - name: MY_ENVIRONMENT_VAR
-#   value: the_value_goes_here
+  # - name: GOOGLE_APPLICATION_CREDENTIALS
+  #   value: /mnt/secrets/key.json
 
 # Allows you to load environment variables from kubernetes secret
 secret: []
-# - envName: GOOGLE_APPLICATION_CREDENTIALS
-#   secretName: ""
-#   secretKey: ""
 # - envName: AWS_ACCESS_KEY_ID
 #   secretName: ""
 #   secretKey: ""
 # - envName: AWS_SECRET_ACCESS_KEY
 #   secretName: ""
 #   secretKey: ""
+
+# Mount additional volumes into pyspark container.
+extraVolumes: []
+#   - name: secrets
+#     secret:
+#       secretName: gcp-credentials
+
+extraVolumeMounts: []
+#   - name: secrets
+#     mountPath: "/mnt/secrets"
+#     readOnly: true
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -67,16 +66,17 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext: 
+  fsGroup: 1000
+  runAsUser: 1000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
+securityContext: 
+  capabilities:
+    drop:
+    - ALL
   # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
 
 # The default is to deploy all pods serially. By setting this to parallel all pods are started at
 # the same time when bootstrapping the cluster
