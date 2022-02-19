@@ -57,6 +57,10 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.disableToken }}
+          command: ["start.sh"]
+          args: ["jupyter", "lab", "--LabApp.token=''"]
+          {{- end }}
           ports:
             - name: http
               containerPort: 8888
