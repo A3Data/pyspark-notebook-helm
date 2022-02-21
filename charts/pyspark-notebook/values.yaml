@@ -14,7 +14,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 volumeClaimTemplate:
-  accessModes: [ "ReadWriteOnce" ]
+  accessModes: ["ReadWriteOnce"]
   volumeMode: Filesystem
   resources:
     requests:
@@ -68,11 +68,11 @@ podAnnotations: {}
 
 disableToken: false
 
-podSecurityContext: 
+podSecurityContext:
   fsGroup: 100
   runAsUser: 1000
 
-securityContext: 
+securityContext:
   capabilities:
     drop:
     - ALL
