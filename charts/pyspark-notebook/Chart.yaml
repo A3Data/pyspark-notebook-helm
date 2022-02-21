@@ -28,4 +28,4 @@ maintainers:
 - email: maylateixeira2013@gmail.com
   name: maylatt
 sources:
-  - https://github.com/a3data/pyspark-helm
+  - https://github.com/a3data/pyspark-notebook-helm
