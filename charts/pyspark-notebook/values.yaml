@@ -31,7 +31,7 @@ persistence:
 # Extra environment variables to append to pyspark container
 # This will be appended to the current 'env:' key. You can use any of the kubernetes env
 # syntax here
-env: [] 
+env: []
   # - name: GOOGLE_APPLICATION_CREDENTIALS
   #   value: /mnt/secrets/key.json
 
