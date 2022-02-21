@@ -1,6 +1,6 @@
 apiVersion: v2
-name: pyspark
-description: A Helm chart for Kubernetes
+name: pyspark-notebook
+description: A Kubernetes Helm chart for deploying Pyspark Notebook
 
 # A chart can be either an 'application' or a 'library' chart.
 #
