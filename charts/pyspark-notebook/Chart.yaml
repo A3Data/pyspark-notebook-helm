@@ -24,8 +24,8 @@ version: 0.1.2-RC
 appVersion: "1.16.0"
 maintainers:
 - email: marcusvoliveira@dcc.ufmg.br
-  name: Marcus V. Oliveira
+  name: voidmarcus
 - email: maylateixeira2013@gmail.com
-  name: Mayla Teixeira
+  name: maylatt
 sources:
   - https://github.com/a3data/pyspark-helm
