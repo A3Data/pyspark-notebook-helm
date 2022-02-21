@@ -1,0 +1,21 @@
+apiVersion: v1
+entries:
+  pyspark:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-02-21T15:59:49.459100615Z"
+    description: A Helm chart for Kubernetes
+    digest: 279af183aaa9a1e3730f8f8ebc57ce29a55565f084af0191fbf485ba9be981d0
+    maintainers:
+    - email: marcusvoliveira@dcc.ufmg.br
+      name: Marcus V. Oliveira
+    - email: maylateixeira2013@gmail.com
+      name: Mayla Teixeira
+    name: pyspark
+    sources:
+    - https://github.com/a3data/pyspark-helm
+    type: application
+    urls:
+    - https://github.com/A3Data/pyspark-notebook-helm/releases/download/pyspark-0.1.1-RC/pyspark-0.1.1-RC.tgz
+    version: 0.1.1-RC
+generated: "2022-02-21T15:59:49.192631262Z"
