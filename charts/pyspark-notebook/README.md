@@ -57,7 +57,7 @@ You should be able to access the frontend via http://localhost:8888.
 
 ```(shell)
 kubectl exec -it pod/pyspark-0 -- bash
-jupyter notebook list
+jupyter server list
 ```
 
 ## LoadBalancer
@@ -72,7 +72,7 @@ Create secret
 ```sh
 kubectl create secret generic gcs-credentials --from-file="./config/key.json"
 ```
-Alter values.yaml
+Alter `values.yaml`
 
 ```yaml
 env: 
@@ -89,3 +89,57 @@ extraVolumeMounts:
     mountPath: "/mnt/secrets"
     readOnly: true 
 ```
+
+
+## AWS Example
+
+Create secret from a `key.json` file.
+```sh
+kubectl create secret generic aws-credentials --from-file="./config/key.json"
+```
+
+Or you can create a secret directly in the terminal:
+```sh
+kubectl create secret generic aws-credentials --from-literal=aws_access_key_id=<YOUR_KEY_ID> --from-literal=aws_secret_access_key=<YOUR_SECRET_KEY> 
+```
+
+Alter `values.yaml` to set your AWS credentials as environment variables
+```yaml
+# Allows you to load environment variables from kubernetes secret               
+secret:                                                                         
+  - envName: AWS_ACCESS_KEY_ID                                                  
+    secretName: aws-credentials                                                 
+    secretKey: aws_access_key_id                                                
+  - envName: AWS_SECRET_ACCESS_KEY                                              
+    secretName: aws-credentials                                                 
+    secretKey: aws_secret_access_key   
+```
+
+And deploy the helm chart with `helm install` command shown above.
+
+For the notebook to connect with AWS S3, you have to setup the correct spark configurations in your `.py` file. An example:
+```python
+from pyspark import SparkConf, SparkContext
+from pyspark.sql import functions as f
+from pyspark.sql import SparkSession
+
+#spark configuration
+conf = (
+    SparkConf().set('spark.executor.extraJavaOptions','-Dcom.amazonaws.services.s3.enableV4=true')
+    .set('spark.driver.extraJavaOptions','-Dcom.amazonaws.services.s3.enableV4=true')
+    .set("spark.hadoop.fs.s3a.fast.upload", True)
+    .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+    .set('spark.jars.packages', 'software.amazon.awssdk:s3:2.17.133,org.apache.hadoop:hadoop-aws:3.2.0')
+    .set('spark.hadoop.fs.s3a.aws.credentials.provider', 'com.amazonaws.auth.EnvironmentVariableCredentialsProvider')
+)
+sc=SparkContext(conf=conf).getOrCreate()
+
+spark=SparkSession(sc)
+
+df = spark.read.parquet("s3a:/<BUCKET-NAME>/<TABLE-NAME>/")
+
+df.printSchema()
+```
+
+Make sure the credentials you passed as env variables do have access to the S3 bucket.
+
