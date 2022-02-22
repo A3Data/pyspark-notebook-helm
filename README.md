@@ -18,17 +18,16 @@ the Kubernetes [Helm](https://helm.sh/) chart for deploying
    
 ## Quickstart
 
-Clone the repository
+Add pyspark-notebook helm repo by running the following
 
 ```(shell)
-git clone https://github.com/A3Data/pyspark-helm.git
+helm repo add pyspark-notebook https://a3data.github.io/pyspark-notebook-helm/
 ```
 
-deploy Pyspark Notebook by running the following
+Then, deploy the pyspark-notebook by running the following
 
 ```(shell)
-helm dependency update ./pyspark-helm/Chart.yaml
-helm install pyspark ./pyspark-helm/ --values ./pyspark-helm/values.yaml
+helm install pyspark-notebook pyspark-notebook/pyspark-notebook 
 ```
 
 Run `kubectl get all` to check whether all the pyspark resources are running. You should get a result similar to below.
@@ -63,8 +62,9 @@ jupyter server list
 ## LoadBalancer
 
 ```sh
-helm install pyspark ./pyspark-helm/ --values ./pyspark-helm/values.yaml --set service.type=LoadBalancer
+helm install pyspark-notebook pyspark-notebook/pyspark-notebook --set service.type=LoadBalancer
 ```
+
 
 ## GCP Example
 
