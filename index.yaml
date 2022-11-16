@@ -3,6 +3,25 @@ entries:
   pyspark-notebook:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-11-16T14:24:53.404891555Z"
+    description: A Kubernetes Helm chart for deploying Pyspark Notebook
+    digest: 6de40aff864971977fb8f7f3ce1421422365402929926015578cbf470bfd0b94
+    maintainers:
+    - email: marcusvoliveira@dcc.ufmg.br
+      name: voidmarcus
+    - email: maylateixeira2013@gmail.com
+      name: maylatt
+    - email: neylsoncrepalde@gmail.com
+      name: neylsoncrepalde
+    name: pyspark-notebook
+    sources:
+    - https://github.com/a3data/pyspark-notebook-helm
+    type: application
+    urls:
+    - https://github.com/A3Data/pyspark-notebook-helm/releases/download/pyspark-notebook-0.2.2/pyspark-notebook-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-02-22T14:47:50.568216229Z"
     description: A Kubernetes Helm chart for deploying Pyspark Notebook
     digest: ce5ee922cd68647513fc55b3de8d3c738b6806cba0e81d82531ff449ae1df555
