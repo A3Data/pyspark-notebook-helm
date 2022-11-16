@@ -28,14 +28,14 @@ spec:
       port: {{ .Values.driverPort }}
       targetPort: driver
   {{- if .Values.service.loadBalancerIP }}
-    loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   {{- end }}
   {{- with .Values.service.loadBalancerSourceRanges }}
-    loadBalancerSourceRanges:
+  loadBalancerSourceRanges:
   {{ toYaml . | indent 4 }}
   {{- end }}
   {{- if .Values.service.externalTrafficPolicy }}
-    externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
   {{- end }}
 
 ---
